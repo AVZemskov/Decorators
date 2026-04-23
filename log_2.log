@@ -1,0 +1,4 @@
+2026-04-23 16:53:18 | Function: hello_world | Args: (), Kwargs: {} | Result: Hello World
+2026-04-23 16:53:18 | Function: summator | Args: (2, 2), Kwargs: {} | Result: 4
+2026-04-23 16:53:18 | Function: div | Args: (6, 2), Kwargs: {} | Result: 3.0
+2026-04-23 16:53:18 | Function: summator | Args: (4.3,), Kwargs: {'b': 2.2} | Result: 6.5
