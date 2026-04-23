@@ -1,0 +1,3 @@
+2026-04-23 20:33:40 | Function: generate_prims | Args: (15,), Kwargs: {} | Result: [2, 3, 5, 7, 11, 13]
+2026-04-23 20:33:40 | Function: transform_data | Args: ([-2, 0, 5, 10, -3],), Kwargs: {'multiplier': 3} | Result: [15, 30]
+2026-04-23 20:33:40 | Function: calculate_stats | Args: ([10, 20, 30, 40],), Kwargs: {} | Result: {'sum': 100, 'avg': 25.0}

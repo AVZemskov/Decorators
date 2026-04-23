@@ -1,9 +1,10 @@
 import os
 from datetime import datetime
-
+from functools import wraps
 
 
 def logger(old_function):
+    @wraps(old_function)
     def new_function(*args, **kwargs):
         result = old_function(*args, **kwargs)
 
@@ -20,13 +21,33 @@ def logger(old_function):
         return result
     return new_function
 
-@logger
+def logger_param(path):
+    def __logger(old_function):
+        @wraps(old_function)
+        def new_function(*args, **kwargs):
+            result = old_function(*args, **kwargs)
+
+            log_entry = (
+                f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | "
+                f"Function: {old_function.__name__} | "
+                f"Args: {args}, Kwargs: {kwargs} | "
+                f"Result: {result}\n"
+            )
+
+            with open(path, 'a', encoding='utf-8') as f:
+                f.write(log_entry)
+
+            return result
+        return new_function
+    return __logger
+
+@logger_param('app.log')
 def generate_prims(limit):
     primes = []
     for num in range(2, limit + 1):
         is_prime = True
-        for i in range(2, int(num ** 0.5)):
-            if num % 1 == 0:
+        for i in range(2, int(num ** 0.5) + 1):
+            if num % i == 0:
                 is_prime = False
                 break
 
@@ -34,12 +55,12 @@ def generate_prims(limit):
             primes.append(num)
     return primes
 
-@logger
+@logger_param('app.log')
 def transform_data(data, multiplier=1):
     processed = (x * multiplier for x in data if x > 0)
     return  list(processed)
 
-@logger
+@logger_param('app.log')
 def calculate_stats(numbers):
     it = iter(numbers)
     total = sum(it)
@@ -50,8 +71,9 @@ def calculate_stats(numbers):
 
 if __name__ == "__main__":
 
-    if os.path.exists('main.log'):
-        os.remove('main.log')
+    log_file = 'app.log'
+    if os.path.exists(log_file):
+        os.remove(log_file)
 
     primes = generate_prims(15)
     print(f"Простые числа до 15: {primes}")
@@ -63,5 +85,5 @@ if __name__ == "__main__":
     print(f"Статистика: {stats}")
 
     print("\nСодержимое файла main.log:")
-    with open('main.log', 'r', encoding='utf-8') as f:
+    with open(log_file, 'r', encoding='utf-8') as f:
         print(f.read())
